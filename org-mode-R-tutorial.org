@@ -361,10 +361,7 @@ latex(summary(study.drug ~ age + gender, data = df,
 
 #+BEGIN_SRC latex :results graphics :noweb yes :file hmisc.png :eval no-export
 <<Hmisc-latex()>>
-#+END_SRC 
-
-#+RESULTS:
-[[file:hmisc.png]]
+#+END_SRC
 
 * Putting it all together, a notebook interface to R
 
