@@ -1,4 +1,4 @@
-% Created 2013-02-10 Sun 21:25
+% Created 2013-02-22 Fri 21:28
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -16,7 +16,7 @@
 \usepackage{hyperref}
 \tolerance=1000
 \usepackage[letterpaper, margin=1in]{geometry}
-\author{Erik Iverson}
+\author{Erik Iverson, updated to Org-version 7.9.3e by G. Jay Kerns}
 \date{\today}
 \title{Org-mode and R: An Introduction}
 \hypersetup{
@@ -71,7 +71,7 @@ However, when they are \emph{exported} into documents like this they will look l
 
 It's something to be aware of when following along from an exported version such as HTML, since we will be referencing source code block arguments that you will not be able to see.  That is another very good reason to follow along with the raw org mode file.
 
-This tutorial was written in GNU Emacs 24.3.50.1 (i686-pc-linux-gnu, GTK+ Version 3.6.0) of 2013-01-28 on actinium, modified by Debian, on Ubuntu 12.10, Org-mode version 7.9.3e-975-g1eccd2, pulled directly from the Org-mode git repository.
+This tutorial was written in GNU Emacs 24.3.50.1 (i686-pc-linux-gnu, GTK+ Version 3.6.0) of 2013-01-28 on actinium, modified by Debian, on Ubuntu 12.10, Org-mode version 7.9.3e (7.9.3e-1175-g3e95e8), pulled directly from the Org-mode git repository.
 
 \subsection*{System Prerequisites for this tutorial}
 \label{sec-1-1}
@@ -91,7 +91,7 @@ For \LaTeX{} support,
 \item \texttt{dvipng} program (comes with MikTeX or the \texttt{texlive-full} Ubuntu package)
 \item Some extra \LaTeX{} packages (comes with the \texttt{texlive-full} Ubuntu package): 
 
-On an Ubuntu 12. installation you will need to install the \texttt{texlive-latex-extra} and \texttt{texlive-fonts-recommended} packages to get the \LaTeX{} documents that Org-mode produces to compile. You can get both of these (plus \texttt{dvipng}) through the Ubuntu package \texttt{texlive-full}, so simply installing the \texttt{texlive-full} package may be the easiest option if you happen to be on Ubuntu.
+On an Ubuntu 12.10 installation you may need to install the \texttt{texlive-latex-extra} and \texttt{texlive-fonts-recommended} packages to get the \LaTeX{} documents that Org-mode produces to compile. You can get both of these (plus \texttt{dvipng}) through the Ubuntu package \texttt{texlive-full}, so simply installing the \texttt{texlive-full} package may be the easiest option if you happen to be on Ubuntu.
 
 For Windows users who have installed MikTeX, you will need the to use the MikTeX package manager to install the following packages for \LaTeX{} support to work by default: \texttt{soul}, \texttt{marvosysm}, \texttt{wasysym}, \texttt{wasy}, \texttt{zhmetrics}. Install these and you should be good to go. Once you are more accustomed to Org-mode you can customize your installation to not require these additional \LaTeX{} packages, but if you are reading this tutorial then likely you are not yet advanced enough to make those customizations, so just install them and it will work without further changes.
 \end{enumerate}
@@ -376,7 +376,7 @@ Noweb was not invented for Org-mode, it's been around for a while, and is used i
 
 Run the following code block. The \texttt{R-latex} R code block will be run, generating the string \texttt{\textbackslash{}LaTeX}, which is then substituted into this \LaTeX{} code block, and then turned into the \LaTeX{} logo by the latex program. Don't worry about the complicated header arguments, those will be explained in more detail in the next section. 
 
-\includegraphics[width=.9\linewidth]{latex-logo.png}
+[[file:latex-logo.png]]
 \subsection*{A more complicated example, exporting \LaTeX{} in buffer, to HTML, and to PDF}
 \label{sec-6-2}
 
@@ -523,7 +523,7 @@ Whether or not you use all the features that Org-mode provides, you can use the 
 
 We have seen how to submit R code for evaluation in Org-mode. There are many good reasons to do this, including tying results to source code, code folding, exporting of code and results into many common formats, improving documentation, and the innumerable features that Org-mode provides, and will continue to provide in the future. 
 
-As with all new processes, it can be a challenge to start working with source code this way.  For what to do next, try looking at the \href{http://orgmode.org/worg/org-contrib/babel/uses.php}{results} of some of those who use Org-mode to accomplish interesting things. You can look at current documentation for R support \href{http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.php}{here}.
+As with all new processes, it can be a challenge to start working with source code this way.  For what to do next, try looking at the \href{http://orgmode.org/worg/org-contrib/babel/uses.php}{results} of some of those who use Org-mode to accomplish interesting things. You can look at current documentation for R support \href{http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html}{here}.
 
 For an exercise in using Org-mode with source code, you can write your Emacs initialization file in Org-mode! These \href{http://orgmode.org/worg/org-contrib/babel/intro.php#sec-8_2_1}{instructions} are slightly out of date, but they give you a general idea of how to proceed. Essentially, your master Emacs init file will simply tangle an Org-mode file full Emacs lisp code blocks, and then load the resulting file.
 

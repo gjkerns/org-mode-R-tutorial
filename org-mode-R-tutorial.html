@@ -4,9 +4,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Org-mode and R: An Introduction</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/><meta name="title" content="Org-mode and R: An Introduction"/>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Org-mode and R: An Introduction"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="author" content="G. Jay Kerns based on an earlier version by Erik Iverson"/>
+<meta name="author" content="Erik Iverson, updated to Org-version 7.9.3e by G. Jay Kerns"/>
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   html { font-family: Times, serif; font-size: 12pt; }
@@ -99,47 +100,6 @@ for the JavaScript code in this tag.
    if(elem.cacheClassTarget)
      target.className = elem.cacheClassTarget;
  }
-/*]]>*///-->
-</script>
-<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
-<!--/*--><![CDATA[/*><!--*/
-    MathJax.Hub.Config({
-        // Only one of the two following lines, depending on user settings
-        // First allows browser-native MathML display, second forces HTML/CSS
-        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
-            jax: ["input/TeX", "output/HTML-CSS"],
-        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
-                     "TeX/noUndefined.js"],
-        tex2jax: {
-            inlineMath: [ ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
-            skipTags: ["script","noscript","style","textarea","pre","code"],
-            ignoreClass: "tex2jax_ignore",
-            processEscapes: false,
-            processEnvironments: true,
-            preview: "TeX"
-        },
-        showProcessingMessages: true,
-        displayAlign: "center",
-        displayIndent: "2em",
-
-        "HTML-CSS": {
-             scale: 100,
-             availableFonts: ["STIX","TeX"],
-             preferredFont: "TeX",
-             webFont: "TeX",
-             imageFont: "TeX",
-             showMathMenu: true,
-        },
-        MMLorHTML: {
-             prefer: {
-                 MSIE:    "MML",
-                 Firefox: "MML",
-                 Opera:   "HTML",
-                 other:   "HTML"
-             }
-        }
-    });
 /*]]>*///-->
 </script>
 </head>
@@ -264,7 +224,7 @@ It's something to be aware of when following along from an exported version such
 </p>
 
 <p>
-This tutorial was written in GNU Emacs 24.3.50.1 (i686-pc-linux-gnu, GTK+ Version 3.6.0) of 2013-01-28 on actinium, modified by Debian, on Ubuntu 12.10, Org-mode version 7.9.3e-975-g1eccd2, pulled directly from the Org-mode git repository.
+This tutorial was written in GNU Emacs 24.3.50.1 (i686-pc-linux-gnu, GTK+ Version 3.6.0) of 2013-01-28 on actinium, modified by Debian, on Ubuntu 12.10, Org-mode version 7.9.3e (7.9.3e-1175-g3e95e8), pulled directly from the Org-mode git repository.
 </p>
 </div>
 
@@ -298,7 +258,7 @@ For LaTeX support,
 <li>Some extra LaTeX packages (comes with the <code>texlive-full</code> Ubuntu package): 
 
 <p>
-On an Ubuntu 12. installation you will need to install the <code>texlive-latex-extra</code> and <code>texlive-fonts-recommended</code> packages to get the LaTeX documents that Org-mode produces to compile. You can get both of these (plus <code>dvipng</code>) through the Ubuntu package <code>texlive-full</code>, so simply installing the <code>texlive-full</code> package may be the easiest option if you happen to be on Ubuntu.
+On an Ubuntu 12.10 installation you may need to install the <code>texlive-latex-extra</code> and <code>texlive-fonts-recommended</code> packages to get the LaTeX documents that Org-mode produces to compile. You can get both of these (plus <code>dvipng</code>) through the Ubuntu package <code>texlive-full</code>, so simply installing the <code>texlive-full</code> package may be the easiest option if you happen to be on Ubuntu.
 </p>
 
 <p>
@@ -631,10 +591,6 @@ You simply use the <code>:session</code> argument to the Org-mode source block.
 </pre>
 </div>
 
-<pre class="example">
-[1] 3.14
-</pre>
-
 <p>
 So, the above code block defines our function (<code>square</code>) and object (<code>x</code>). Now we want to apply call our <code>square</code> function with the <code>x</code> object. Without <code>:session</code>, we could not do this.
 </p>
@@ -705,7 +661,6 @@ Running the above code block will result in an error, since a new R session was 
 </div>
 
 <pre class="example">
-[1]   1   4   9  16  25  36  49  64  81 100
 [1]   1   4   9  16  25  36  49  64  81 100
 </pre>
 
@@ -821,12 +776,6 @@ Noweb was not invented for Org-mode, it's been around for a while, and is used i
 <p>
 Run the following code block. The <code>R-latex</code> R code block will be run, generating the string <code>\LaTeX</code>, which is then substituted into this LaTeX code block, and then turned into the LaTeX logo by the latex program. Don't worry about the complicated header arguments, those will be explained in more detail in the next section. 
 </p>
-
-
-<div class="figure">
-<p><img src="latex-logo.png"  alt="latex-logo.png"/></p>
-<p></p>
-</div>
 </div>
 </div>
 <div id="outline-container-6-2" class="outline-3">
@@ -1069,7 +1018,7 @@ We have seen how to submit R code for evaluation in Org-mode. There are many goo
 </p>
 
 <p>
-As with all new processes, it can be a challenge to start working with source code this way.  For what to do next, try looking at the <a href="http://orgmode.org/worg/org-contrib/babel/uses.php" >results</a> of some of those who use Org-mode to accomplish interesting things. You can look at current documentation for R support <a href="http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.php" >here</a>.
+As with all new processes, it can be a challenge to start working with source code this way.  For what to do next, try looking at the <a href="http://orgmode.org/worg/org-contrib/babel/uses.php" >results</a> of some of those who use Org-mode to accomplish interesting things. You can look at current documentation for R support <a href="http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html" >here</a>.
 </p>
 
 <p>
@@ -1084,7 +1033,7 @@ In short, there are many possibilities using these techniques! In many ways, thi
 
 </div><div id="postamble">
 <p class="date">Date: </p>
-<p class="author">Author : G. Jay Kerns based on an earlier version by Erik Iverson</p>
+<p class="author">Author : Erik Iverson, updated to Org-version 7.9.3e by G. Jay Kerns</p>
 <p class="creator">Generated by <a href="http://orgmode.org">Org</a> mode 7.9.3e in <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1.</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
 </div>
