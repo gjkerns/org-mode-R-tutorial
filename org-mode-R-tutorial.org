@@ -13,6 +13,7 @@
 #+LaTeX_HEADER: \usepackage[letterpaper, margin=1in]{geometry}
 #+PROPERTY:   exports both
 #+PROPERTY:   session *R*
+#+PROPERTY:   eval no-export
 
 #+name: banner
 #+BEGIN_HTML
@@ -61,7 +62,7 @@ code and results can be included in your exported Org-mode documents,
 opening up several interesting possibilities for automatically
 generating comprehensive documentation and advanced reports. You can
 also extract the source code portions of an Org-mode document for
-further processing, through a process called /tangling/. This tutorial
+further processing through a process called /tangling/. This tutorial
 will get you started using these Org-mode features together with the R
 programming language.
 
@@ -127,14 +128,14 @@ directly from the Org-mode git repository.
 
 First, we need to make sure our environment is setup correctly for the
 examples to run.  This requires a bit more work under Windows than
-others, see below.
+others; see below.
 
 Here is a list of software we need to run the examples:
 1. Org-mode 7.9.3e or greater, see [[http://orgmode.org]].
 2. A working R installation, see [[http://www.R-project.org]].
 3. The R examples use the =ggplot2= and =Hmisc= packages from
    CRAN. Simply install from the R command line by issuing the
-   command, => install.packages(c("ggplot2", "Hmisc"))=. R must be in
+   command => install.packages(c("ggplot2", "Hmisc"))=. R must be in
    your =PATH= environment variable.  For Windows users, you will
    probably have to add this yourself.
 
@@ -247,7 +248,7 @@ the capabilities of Org-mode.
 The following is a simple R code block in Org-mode. You can edit the
 code in its own buffer by typing C-c ' (that's a single quote), or
 just by editing the code within the Org-mode buffer. The nice thing
-about opening the code in its own buffer with C-c ', is that the
+about opening the code in its own buffer with C-c ' is that the
 buffer is then in ESS mode. All the ESS key bindings, interaction with
 the inferior R process, and syntax highlighting work as expected.
 
@@ -293,7 +294,7 @@ changing the =/path/to= portion to reflect your local setup. The
 following can go in your Emacs init file.
 
 #+BEGIN_SRC emacs-lisp :results silent :exports code
- (add-to-list 'load-path "/path/to/Org-mode/contrib/lisp")
+ (add-to-list 'load-path "/path/to/org-mode/contrib/lisp")
 #+END_SRC
 
 ** Evaluating the code block using Org-mode
@@ -336,6 +337,18 @@ following R code block with =C-c C-c= and see what happens.
   square(1:10)
 #+END_SRC 
 
+#+RESULTS:
+|   1 |
+|   4 |
+|   9 |
+|  16 |
+|  25 |
+|  36 |
+|  49 |
+|  64 |
+|  81 |
+| 100 |
+
 If you've submitted the code block using =C-c C-c=, and everything
 went well, you should have noticed that your buffer was
 modified. Org-mode has inserted a results section underneath the code
@@ -358,8 +371,8 @@ an Org-mode table by default. That is potentially very useful, but
 what if we just want to see the R output as it would appear printed in
 the R console? Well, just as R function have arguments, Org-mode
 source blocks have arguments. One of the arguments controls how the
-output is displayed, the =:results= argument. It is set to 'value' by
-default, but we can change it to 'output' to see the usual R
+output is displayed, the =:results= argument. It is set to =value= by
+default, but we can change it to =output= to see the usual R
 output. Notice the syntax for setting source code block arguments
 below.
 
@@ -370,6 +383,9 @@ below.
 
   square(1:10)
 #+END_SRC 
+
+#+RESULTS:
+:  [1]   1   4   9  16  25  36  49  64  81 100
 
 
 Now we see the typical R notation for printing a vector. Note in the
@@ -388,6 +404,11 @@ the variable =x=.
   
   square(1:10)
 #+END_SRC 
+
+#+RESULTS:
+:  [1]  1  2  3  4  5  6  7  8  9 10
+: This is the square function.
+:  [1]   1   4   9  16  25  36  49  64  81 100
 
 Try changing the =:results= argument to =value= (which is the same as
 omitting it completely), and re-run the above code block. You should
@@ -419,7 +440,7 @@ header in a few sections.
 * Passing data between code blocks
 
 One of the biggest limitations to using code blocks like above is that
-a new R session is started up `behind the scenes` when we evaluate
+a new R session is started up "behind the scenes" when we evaluate
 each code block. So, if we define a function in one code block, and
 want to use it another code block later on, we are out of luck. This
 limitation can be overcome by using R session-based evaluation, which
@@ -438,12 +459,14 @@ just like we do with R files in ESS.
 
 You simply use the =:session= argument to the Org-mode source block.
 
-#+BEGIN_SRC R :session *R* :results output
+#+BEGIN_SRC R :session R :results output
   square <- function(x) {
     x * x
   }
   x <- 1:10 
 #+END_SRC 
+
+#+RESULTS:
 
 So, the above code block defines our function (=square=) and object
 (=x=). Now we want to apply call our =square= function with the =x=
@@ -453,6 +476,8 @@ object. Without =:session=, we could not do this.
   square(x)
 #+END_SRC
 
+#+RESULTS:
+
 Running the above code block will result in an error, since a new R
 session was started, and our objects were not available. Now try the
 same code block, but with the =:session= argument, as below.
@@ -460,6 +485,9 @@ same code block, but with the =:session= argument, as below.
 #+BEGIN_SRC R :session *R* :results output
   square(x)
 #+END_SRC
+
+#+RESULTS:
+:  [1]   1   4   9  16  25  36  49  64  81 100
 
 The results we expect are now inserted, since we submitted this code
 block to the same R session where the square function was defined.
@@ -515,12 +543,15 @@ support above, an overlay of the file will be inserted inline in the
 actual Org-mode document! Run the following source code block to see
 how it works.
 
-#+BEGIN_SRC R :results output graphics :file diamonds.png
+#+BEGIN_SRC R :results graphics :file diamonds.png
   library(ggplot2)
   data(diamonds)
   dsmall <-diamonds[sample(nrow(diamonds), 100), ] 
   qplot(carat, price, data = dsmall)
 #+END_SRC
+
+#+RESULTS:
+[[file:diamonds.png]]
 
 This opens up many opportunities for doing interesting things with R
 within your Org-mode documents!
@@ -548,7 +579,7 @@ use the =#+name= syntax to do this. Note that you *don't* have to run
 the following code block, it will be run automatically by the next
 one.
 
-#+name: R-latex
+#+NAME: R-latex
 #+BEGIN_SRC R :results silent :exports code
   latexlogo <- function() {
       "\\LaTeX"
@@ -600,7 +631,7 @@ documents. <<R-latex()>>~is available as free software.
 Now let's try something a little more complex, using an R function
 that generates a full LaTeX table. This particular example depends on
 having the R package Hmisc installed. If you don't have it installed,
-start up R and then do: => install.packages("Hmisc")=
+start up R and then do: => install.packages("Hmisc")=.
 
 What follows is an R source block that generates some LaTeX code
 representing a table.  We want to be able to insert a =png= image of
@@ -634,15 +665,7 @@ evaluation and HTML export, but we don't want it produced for LaTeX
 export, otherwise the image /and/ the actual table will be included in
 the PDF.
 
-The final =:buffer= argument controls the color selection through the
-=org-format-latex-options= variable. Essentially, if =:buffer= is set
-to 'yes', your Emacs buffer colors will be used as arguments to the
-=dvipng= program used to produce the image, assuming you don't change
-that values of the elements to something other than 'default' in
-=org-format-latex-options=. If =:buffer= is 'no', then the =html*=
-elements of that variable will be used.
-
-#+name:Hmisc-latex
+#+NAME:Hmisc-latex
 #+BEGIN_SRC R :results output latex :exports results
 set.seed(1) 
 library(Hmisc)
@@ -665,6 +688,11 @@ latex(summary(study.drug ~ age + gender, data = df,
 <<Hmisc-latex()>>
 #+END_SRC
 
+#+RESULTS:
+#+BEGIN_LaTeX
+[[file:hmisc.png]]
+#+END_LaTeX
+
 * Putting it all together, a notebook interface to R
 
 Combining the techniques shown above: submitting code blocks,
@@ -675,7 +703,7 @@ for R.
 This is potentially useful for countless tasks such as: a laboratory
 notebook, time series analysis of diet/exercise habits, tracking your
 favorite baseball team over the course of a season, or any reporting
-task you can think of. Since Org-mode is a general-purpose authoring
+task you can imagine. Since Org-mode is a general-purpose authoring
 tool, with very strong exporting capabilities, almost anything is
 possible.
 
@@ -702,7 +730,7 @@ Org-mode file full of source code!
 * Tangling code 
 
 With many projects, you will have to share /code/ with other
-programmers, who are most likely not going to be programming in
+programmers who are most likely not going to be programming in
 Org-mode. Therefore, sharing an Org-mode file full of code is not an
 option.
 
@@ -723,7 +751,7 @@ Read on to learn how to perform each of these steps.
 ** Instructing Org-mode how to tangle with header arguments
 
 Let's take a look at a few examples. Each example contains an R
-comment, so that you can see in the resulting =.R= file where it came
+comment so that you can see in the resulting =.R= file where it came
 from.
 
 This first example will not extract any code from the source block. It
@@ -735,8 +763,8 @@ x <- 1:10
 print(x) 
 #+END_SRC
 
-This will place the code in source code block in
-=Org-mode-R-tutorial.R=, since we don't specify a filename for the
+The following will place the code in source code block in
+=org-mode-R-tutorial.R= since we don't specify a filename for the
 =.R= file.
 
 #+BEGIN_SRC R :tangle yes :exports code
@@ -745,8 +773,8 @@ x <- 1:10
 print(x)
 #+END_SRC
 
-This will place the tangled code in =Rcode.R=, since we specify that
-name.
+The following will place the tangled code in =Rcode.R=, since we
+specify that name.
 
 #+BEGIN_SRC R :tangle Rcode.R :exports code
 # tangle was specified, and a file name given (Rcode.R)
@@ -758,8 +786,8 @@ Note that we will have multiple source code blocks in an Org-mode
 file, and they might have different types. For example, we might have
 R and Python code in the same document, but different source blocks.
 
-This is no problem, as the tangling mechanism will generate
-appropriate files of each type, containing only the code of that type.
+This is no problem as the tangling mechanism will generate appropriate
+files of each type containing only the code of that type.
 
 Finally, you can specify the =:tangle= argument as a buffer-wide
 setting, so that you don't have to specify it for every source code
@@ -770,7 +798,7 @@ file that includes:
 - all code for an R package
 - all documentation for the package
 - unit tests for the package
-- material to generate slides for presentations, through =org-beamer=
+- material to generate slides for presentations, through =ox-beamer=
 - notes taken during package development 
 - links to emails with bug reports, feature requests, etc. 
 - a Makefile to build the package and documentation
@@ -782,7 +810,7 @@ code files from our Org-mode document, how do we actually tangle the
 document?
 
 We simply have to call the =org-babel-tangle= function, bound by
-default to =C-c C-v C-t=.
+default to =C-c C-v t=.
 
 Org-mode confirms in the minibuffer how many code blocks have been
 tangled, and inspecting the file system should show that your source
@@ -797,8 +825,8 @@ Org-mode provides a rich set of functions and customizations for
 exporting documents into more human-readable forms, and for users who
 are not Emacs or Org-mode users. The most common methods are
 generating PDF documents through LaTeX, and HTML output. Source code
-will be syntax highlighted, in HTML.  There are various options for
-PDF, including using the listings package.
+will be syntax highlighted in HTML.  There are various options for
+PDF including using the =listings= package.
 
 With Org-mode source blocks, you can choose to export the source code,
 the results of evaluating the source code, neither, or both. The
@@ -814,7 +842,7 @@ facility.
 
 Using Org-mode in this manner is essentially an alternative to Sweave,
 with the advantages of:
-- do not need to learn LaTeX or other markup language
+- you do not need to learn LaTeX or other markup language
 - any future Org-mode export engines will be available to you
 - writing code in Org-mode gives you access to a hyper-commenting
   system, with features such as TODO items, in-document linking, tags,
@@ -836,12 +864,12 @@ formats, improving documentation, and the innumerable features that
 Org-mode provides, and will continue to provide in the future.
 
 As with all new processes, it can be a challenge to start working with
-source code this way.  For what to do next, try looking at the [[http://orgmode.org/worg/org-contrib/babel/uses.php][results]]
+source code this way.  For what to do next, try looking at the [[http://orgmode.org/worg/org-contrib/babel/uses.html][results]]
 of some of those who use Org-mode to accomplish interesting
 things. You can look at current documentation for R support [[http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html][here]].
 
 For an exercise in using Org-mode with source code, you can write your
-Emacs initialization file in Org-mode! These [[http://orgmode.org/worg/org-contrib/babel/intro.php#sec-8_2_1][instructions]] are slightly
+Emacs initialization file in Org-mode! These [[http://orgmode.org/worg/org-contrib/babel/intro.html#sec-8-2-1][instructions]] are slightly
 out of date, but they give you a general idea of how to
 proceed. Essentially, your master Emacs init file will simply tangle
 an Org-mode file full Emacs lisp code blocks, and then load the
