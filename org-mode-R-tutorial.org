@@ -12,7 +12,7 @@
 #+EXPORT_EXCLUDE_TAGS: noexport
 #+LaTeX_HEADER: \usepackage[letterpaper, margin=1in]{geometry}
 #+PROPERTY:   exports both
-#+PROPERTY:   session *R*
+#+PROPERTY:   session "*R*"
 #+PROPERTY:   eval no-export
 
 #+name: banner
@@ -575,7 +575,7 @@ obviously no reason to do this except for demonstration purposes.
 First we must define an R source block that generates some LaTeX code
 that displays the logo. That's fairly straightforward. Notice we have
 given the source code block a name, so that we can call it later. We
-use the =#+name= syntax to do this. Note that you *don't* have to run
+use the =#+NAME= syntax to do this. Note that you *don't* have to run
 the following code block, it will be run automatically by the next
 one.
 

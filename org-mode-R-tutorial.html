@@ -1,62 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Org-mode and R: An Introduction</title>
+<!-- 2013-04-09 Tue 20:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="Org-mode and R: An Introduction"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="author" content="Erik Iverson, updated to Org-version 7.9.3e by G. Jay Kerns"/>
+<meta name="author" content="Erik Iverson, updated by G. Jay Kerns"/>
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
-  html { font-family: Times, serif; font-size: 12pt; }
   .title  { text-align: center; }
-  .todo   { color: red; }
+  .todo   { font-family: monospace; color: red; }
   .done   { color: green; }
-  .tag    { background-color: #add8e6; font-weight:normal }
-  .target { }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
   .timestamp { color: #bebebe; }
   .timestamp-kwd { color: #5f9ea0; }
-  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
-  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
-  .center {margin-left:auto; margin-right:auto; text-align:center;}
-  p.verse { margin-left: 3% }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
   pre {
-	border: 1pt solid #AEBDCC;
-	background-color: #F3F5F7;
-	padding: 5pt;
-	font-family: courier, monospace;
-        font-size: 90%;
-        overflow:auto;
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
   }
-  table { border-collapse: collapse; }
-  td, th { vertical-align: top;  }
-  th.right  { text-align:center;  }
-  th.left   { text-align:center;   }
-  th.center { text-align:center; }
-  td.right  { text-align:right;  }
-  td.left   { text-align:left;   }
-  td.center { text-align:center; }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
   dt { font-weight: bold; }
-  div.figure { padding: 0.5em; }
-  div.figure p { text-align: center; }
-  div.inlinetask {
-    padding:10px;
-    border:2px solid gray;
-    margin:10px;
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
     background: #ffffcc;
   }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
   textarea { overflow-x: auto; }
-  .linenr { font-size:smaller }
-  .code-highlighted {background-color:#ffff00;}
-  .org-info-js_info-navigation { border-style:none; }
-  #org-info-js_console-label { font-size:10px; font-weight:bold;
-                               white-space:nowrap; }
-  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
-                                 font-weight:bold; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
   /*]]>*/-->
-</style><script type="text/javascript">
+</style>
+<script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
@@ -152,17 +181,6 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<p>
-This is an introduction to using R (<a href="http://www.R-project.org" >http://www.R-project.org</a>) source code within Emacs Org-mode (<a href="http://orgmode.org" >http://orgmode.org</a>). Org-mode files use headlines to organize information. Each top-level headline in this document starts with a single '*', like the "Introduction" headline below. While this is not an introduction to using Org-mode, you will need to know one command to proceed: use the <code>TAB</code> key on a headline to open it. <code>TAB</code> will cycle through the possible visibility states of the information under the headline, and eventually <code>TAB</code> will collapse the headline back to how you see it now. One last command to note: <code>C-c C-o</code> opens links like those above in your web browser.
-</p>
-
-<p>
-Since you are following along in Org-mode, instead of reading this in an exported format like HTML or PDF, you will need Org-mode 7.9.3e or greater to go interact with this tutorial. See <a href="http://orgmode.org/index.html#sec-3" >here</a> for instructions on how to download the latest version of Org-mode. To see what version of Org-mode you have installed, type <code>M-x org-version</code>, and hit <code><ENTER></code>. The result will be in the minibuffer. If the version is anything less than 7.9.3, you'll need to update to run the examples. If you have an older version of Org-mode but just want to read about the possibilities, you can continue on.
-</p>
-
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1">Introduction</h2>
-<div class="outline-text-2" id="text-1">
 <div id="subtitle" style="float: center; text-align: center;">
 <p>
 Org-mode support for
@@ -176,19 +194,75 @@ Org-mode support for
 </div>
 
 <p>
-Emacs Org-mode 7.9.3 has an exciting feature that lets you submit source code blocks within an Org-mode document for evaluation. This lets you do things like insert the results of R code into an Emacs buffer, insert graphical and tabular material into a buffer, or pass the results of R code to other programming languages such as Python. R code and results can be included in your exported Org-mode documents, opening up several interesting possibilities for automatically generating comprehensive documentation and advanced reports. You can also extract the source code portions of an Org-mode document for further processing, through a process called <i>tangling</i>. This tutorial will get you started using these Org-mode features together with the R programming language.
+This is an introduction to using R (<a href="http://www.R-project.org">http://www.R-project.org</a>) source
+code within Emacs Org-mode (<a href="http://orgmode.org">http://orgmode.org</a>). Org-mode files use
+headlines to organize information. Each top-level headline in this
+document starts with a single '*', like the "Introduction" headline
+below. While this is not an introduction to using Org-mode, you will
+need to know one command to proceed: use the <code>TAB</code> key on a headline
+to open it. <code>TAB</code> will cycle through the possible visibility states of
+the information under the headline, and eventually <code>TAB</code> will collapse
+the headline back to how you see it now. One last command to note:
+<code>C-c C-o</code> opens links like those above in your web browser.
 </p>
 
 <p>
-If you are unfamiliar with Org-mode itself, you can learn a lot more from the project's <a href="http://orgmode.org" >website</a>. There are many good tutorials available on Org-mode already. The <a href="http://orgmode.org/guide/index.html" >compact guide</a> is a great place to start. This current document focuses on source code support. Note that while the features being demonstrated in this document were being developed, the project was known as org-babel. Thus, many of the variables and function names reference 'org-babel' in their names. Org-babel is now distributed with Org-mode, so many of the previous configuration hurdles are now avoided. Keep this in mind as you read old mailing list posts and documentation. The authors of org-babel are Eric Schulte and Dan Davison. They have worked very hard creating this amazing system!
+If you are following along in Org-mode, instead of reading this in an
+exported format like HTML or PDF, you will need Org-mode 7.9.3e or
+greater to go interact with this tutorial. See <a href="http://orgmode.org/index.html#sec-3">here</a> for instructions
+on how to download the latest version of Org-mode. To see what version
+of Org-mode you have installed, type <code>M-x org-version</code>, and hit
+<code>&lt;ENTER&gt;</code>. The result will be in the minibuffer. If the version is
+anything less than 7.9.3, you'll need to update to run the
+examples. If you have an older version of Org-mode but just want to
+read about the possibilities, you can continue on.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Emacs Org-mode has an exciting feature that lets you submit source
+code blocks within an Org-mode document for evaluation. This lets you
+do things like insert the results of R code into an Emacs buffer,
+insert graphical and tabular material into a buffer, or pass the
+results of R code to other programming languages such as Python. R
+code and results can be included in your exported Org-mode documents,
+opening up several interesting possibilities for automatically
+generating comprehensive documentation and advanced reports. You can
+also extract the source code portions of an Org-mode document for
+further processing through a process called <i>tangling</i>. This tutorial
+will get you started using these Org-mode features together with the R
+programming language.
 </p>
 
 <p>
-Although you may be viewing this tutorial in an exported format like HTML or PDF, the tutorial was written in Org-mode. You will benefit most from it by following along in Org-mode. Only then can you interactively evaluate the examples to see Org-mode in action. For this reason, you should download the actual org mode file that this document is based on, visit the file in Emacs, and follow along there.
+If you are unfamiliar with Org-mode itself, you can learn a lot more
+from the project's <a href="http://orgmode.org">website</a>. There are many good tutorials available on
+Org-mode already. The <a href="http://orgmode.org/guide/index.html">compact guide</a> is a great place to start. This
+current document focuses on source code support. Note that while the
+features being demonstrated in this document were being developed, the
+project was known as org-babel. Thus, many of the variables and
+function names reference 'org-babel' in their names. Org-babel is now
+distributed with Org-mode, so many of the previous configuration
+hurdles are now avoided. Keep this in mind as you read old mailing
+list posts and documentation. The authors of org-babel are Eric
+Schulte and Dan Davison. They have worked very hard creating this
+amazing system!
 </p>
 
 <p>
-For those following along in an exported version, such as HTML,  in the actual Org-mode file, source code blocks look like this: 
+Although you may be viewing this tutorial in an exported format like
+HTML or PDF, the tutorial was written in Org-mode. You will benefit
+most from it by following along in Org-mode. Only then can you
+interactively evaluate the examples to see Org-mode in action. For
+this reason, you should download the actual org mode file that this
+document is based on, visit the file in Emacs, and follow along there.
+</p>
+
+<p>
+For those following along in an exported version, such as HTML, in the
+actual Org-mode file, source code blocks look like this:
 </p>
 
 <pre class="example">
@@ -204,7 +278,8 @@ For those following along in an exported version, such as HTML,  in the actual O
 </pre>
 
 <p>
-However, when they are <i>exported</i> into documents like this they will look like:
+However, when they are <i>exported</i> into documents like this they will
+look like:
 </p>
 
 <div class="org-src-container">
@@ -220,30 +295,42 @@ However, when they are <i>exported</i> into documents like this they will look l
 </div>
 
 <p>
-It's something to be aware of when following along from an exported version such as HTML, since we will be referencing source code block arguments that you will not be able to see.  That is another very good reason to follow along with the raw org mode file.
+It's something to be aware of when following along from an exported
+version such as HTML, since we will be referencing source code block
+arguments that you will not be able to see.  That is another very good
+reason to follow along with the raw org mode file.
 </p>
 
 <p>
-This tutorial was written in GNU Emacs 24.3.50.1 (i686-pc-linux-gnu, GTK+ Version 3.6.0) of 2013-01-28 on actinium, modified by Debian, on Ubuntu 12.10, Org-mode version 7.9.3e (7.9.3e-1175-g3e95e8), pulled directly from the Org-mode git repository.
+This tutorial was written in GNU Emacs 24.3.50.1 (i686-pc-linux-gnu,
+GTK+ Version 3.6.0) of 2013-01-28 on actinium, modified by Debian, on
+Ubuntu 12.10, Org-mode version 7.9.3e (7.9.3e-1175-g3e95e8), pulled
+directly from the Org-mode git repository.
 </p>
 </div>
 
-<div id="outline-container-1-1" class="outline-3">
+<div id="outline-container-sec-1-1" class="outline-3">
 <h3 id="sec-1-1">System Prerequisites for this tutorial</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
-First, we need to make sure our environment is setup correctly for the examples to run.  This requires a bit more work under Windows than others, see below.
+First, we need to make sure our environment is setup correctly for the
+examples to run.  This requires a bit more work under Windows than
+others; see below.
 </p>
 
 <p>
 Here is a list of software we need to run the examples:
 </p>
 <ol class="org-ol">
-<li>Org-mode 7.9.3e or greater, see <a href="http://orgmode.org" >http://orgmode.org</a>.
+<li>Org-mode 7.9.3e or greater, see <a href="http://orgmode.org">http://orgmode.org</a>.
 </li>
-<li>A working R installation, see <a href="http://www.R-project.org" >http://www.R-project.org</a>.
+<li>A working R installation, see <a href="http://www.R-project.org">http://www.R-project.org</a>.
 </li>
-<li>The R examples use the <code>ggplot2</code> and <code>Hmisc</code> packages from CRAN. Simply install from the R command line by issuing the command, <code>> install.packages(c("ggplot2", "Hmisc"))</code>. R must be in your <code>PATH</code> environment variable.  For Windows users, you will probably have to add this yourself. 
+<li>The R examples use the <code>ggplot2</code> and <code>Hmisc</code> packages from
+CRAN. Simply install from the R command line by issuing the
+command <code>&gt; install.packages(c("ggplot2", "Hmisc"))</code>. R must be in
+your <code>PATH</code> environment variable.  For Windows users, you will
+probably have to add this yourself.
 </li>
 </ol>
 
@@ -251,41 +338,72 @@ Here is a list of software we need to run the examples:
 For LaTeX support, 
 </p>
 <ol class="org-ol">
-<li>a working LaTeX installation, see <a href="http://latex-project.org" >http://latex-project.org</a>. Windows users can use <a href="http://miktex.org/" >MikTeX</a>.  
+<li>a working LaTeX installation, see <a href="http://latex-project.org">http://latex-project.org</a>. Windows
+users can use <a href="http://miktex.org/">MikTeX</a>.
 </li>
-<li><code>dvipng</code> program (comes with MikTeX or the <code>texlive-full</code> Ubuntu package)
+<li><code>dvipng</code> program (comes with MikTeX or the <code>texlive-full</code> Ubuntu
+package)
 </li>
-<li>Some extra LaTeX packages (comes with the <code>texlive-full</code> Ubuntu package): 
-
-<p>
-On an Ubuntu 12.10 installation you may need to install the <code>texlive-latex-extra</code> and <code>texlive-fonts-recommended</code> packages to get the LaTeX documents that Org-mode produces to compile. You can get both of these (plus <code>dvipng</code>) through the Ubuntu package <code>texlive-full</code>, so simply installing the <code>texlive-full</code> package may be the easiest option if you happen to be on Ubuntu.
-</p>
-
-<p>
-For Windows users who have installed MikTeX, you will need the to use the MikTeX package manager to install the following packages for LaTeX support to work by default: <code>soul</code>, <code>marvosysm</code>, <code>wasysym</code>, <code>wasy</code>, <code>zhmetrics</code>. Install these and you should be good to go. Once you are more accustomed to Org-mode you can customize your installation to not require these additional LaTeX packages, but if you are reading this tutorial then likely you are not yet advanced enough to make those customizations, so just install them and it will work without further changes.
-</p>
+<li>Some extra LaTeX packages (comes with the <code>texlive-full</code> Ubuntu
+package). On an Ubuntu 12.10 installation you may need to install
+the <code>texlive-latex-extra</code> and <code>texlive-fonts-recommended</code> packages
+to get the LaTeX documents that Org-mode produces to compile. You
+can get both of these (plus <code>dvipng</code>) through the Ubuntu package
+<code>texlive-full</code>, so simply installing the <code>texlive-full</code> package may
+be the easiest option if you happen to be on Ubuntu.
 </li>
 </ol>
 
 <p>
-For inline image support, you will need <code>libpng</code>, which GNU/Linux users probably already have.  Windows you can download <a href="http://downloads.sourceforge.net/gnuwin32/libpng-1.2.37-setup.exe" >http://downloads.sourceforge.net/gnuwin32/libpng-1.2.37-setup.exe</a> and after running the installation program, <b>manually</b> copy the <code>libpng12.dll</code> and <code>zlib1.dll</code> files into your <code>emacs-24.x\bin</code> directory, and then restart Emacs for inline image support to work. One easy way to test if png support is working is to simply open a png file within Emacs from dired.
+For Windows users who have installed MikTeX, you will need the to use
+the MikTeX package manager to install the following packages for LaTeX
+support to work by default: <code>soul</code>, <code>marvosysm</code>, <code>wasysym</code>, <code>wasy</code>,
+<code>zhmetrics</code>. Install these and you should be good to go. Once you are
+more accustomed to Org-mode you can customize your installation to not
+require these additional LaTeX packages, but if you are reading this
+tutorial then likely you are not yet advanced enough to make those
+customizations, so just install them and it will work without further
+changes.
+</p>
+
+<p>
+For inline image support, you will need <code>libpng</code>, which GNU/Linux
+users probably already have.  Windows you can download
+<a href="http://downloads.sourceforge.net/gnuwin32/libpng-1.2.37-setup.exe">http://downloads.sourceforge.net/gnuwin32/libpng-1.2.37-setup.exe</a> and
+after running the installation program, <b>manually</b> copy the
+<code>libpng12.dll</code> and <code>zlib1.dll</code> files into your <code>emacs-24.x\bin</code>
+directory, and then restart Emacs for inline image support to
+work. One easy way to test if png support is working is to simply open
+a png file within Emacs from dired.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-2" class="outline-2">
+<div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2">Setting up Org-mode for source code evaluation</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Setting up Org-mode to run source code is very simple. Since you are reading the R tutorial, we will assume you want to specifically run R source code blocks within Org-mode. Since we use LaTeX later on in the tutorial, we'll also take the opportunity to set up Org-mode to evaluate LaTeX blocks. 
+Setting up Org-mode to run source code is very simple. Since you are
+reading the R tutorial, we will assume you want to specifically run R
+source code blocks within Org-mode. Since we use LaTeX later on in the
+tutorial, we'll also take the opportunity to set up Org-mode to
+evaluate LaTeX blocks.
 </p>
 
 <p>
-The absolute, bare minimum setup you need to perform is to run the following Emacs lisp code. For a preview of what we're going to learn with in this tutorial, simply hit <code>C-c C-c</code> anywhere in the following code block. You will be asked in the minibuffer to confirm that you want to evaluate the source code contained in the block. Confirm this, and you'll be set up for the rest of the tutorial. You can also add the lines between the <code>#+BEGIN_SRC</code> and <code>#+END_SRC</code> lines to your Emacs initialization file, so that they are always run when starting Emacs.
+The absolute, bare minimum setup you need to perform is to run the
+following Emacs lisp code. For a preview of what we're going to learn
+with in this tutorial, simply hit <code>C-c C-c</code> anywhere in the following
+code block. You will be asked in the minibuffer to confirm that you
+want to evaluate the source code contained in the block. Confirm this,
+and you'll be set up for the rest of the tutorial. You can also add
+the lines between the <code>#+BEGIN_SRC</code> and <code>#+END_SRC</code> lines to your
+Emacs initialization file, so that they are always run when starting
+Emacs.
 </p>
 
 <p>
-So go ahead, hit <code>C-c C-c</code> with point in the following code block. 
+So go ahead, hit <code>C-c C-c</code> with point in the following code block.
 </p>
 
 <div class="org-src-container">
@@ -298,23 +416,39 @@ So go ahead, hit <code>C-c C-c</code> with point in the following code block.
 </div>
 
 <p>
-If you received any type of error message, please make sure that you have the proper version of Org-mode installed by typing <code>M-x org-version <Enter></code>. You should have at least 7.01. If you still are running Org-mode version 6.xx or before, please visit the project web site for instructions on downloading the latest version.
+If you received any type of error message, please make sure that you
+have the proper version of Org-mode installed by typing <code>M-x
+org-version &lt;Enter&gt;</code>. You should have at least 7.01. If you still are
+running Org-mode version 6.xx or before, please visit the project web
+site for instructions on downloading the latest version.
 </p>
 
 <p>
-If you didn't get any errors, Org-mode is now setup to run the R examples that follow.
+If you didn't get any errors, Org-mode is now setup to run the R
+examples that follow.
 </p>
 
 <p>
-Note to Windows users. Make sure the directory containing the R executable is added to your <code>PATH</code> variable for you to run these examples.
+Note to Windows users: make sure the directory containing the R
+executable is added to your <code>PATH</code> variable for you to run these
+examples.
 </p>
 </div>
 
-<div id="outline-container-2-1" class="outline-3">
+<div id="outline-container-sec-2-1" class="outline-3">
 <h3 id="sec-2-1">Prompting for confirmation before evaluating code</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-There is one more variable to set in your Emacs initialization file relating to evaluating source code in Org-mode. By default, Org-mode will ask you to confirm each and every time you evaluate a source code block. If you ran the above source code block with <code>C-c C-c</code>, you will have noticed that behavior. You can turn this feature off with the following line. If you choose, simply hit <code>C-c C-c</code> to evaluate it for this session, or put it in your Emacs initialization file. Then, you won't be asked before Org-mode evaluates source code blocks. You may view this as a security risk. Always look over the code you're going to evaluate before submitting it. 
+There is one more variable to set in your Emacs initialization file
+relating to evaluating source code in Org-mode. By default, Org-mode
+will ask you to confirm each and every time you evaluate a source code
+block. If you ran the above source code block with <code>C-c C-c</code>, you will
+have noticed that behavior. You can turn this feature off with the
+following line. If you choose, simply hit <code>C-c C-c</code> to evaluate it for
+this session, or put it in your Emacs initialization file. Then, you
+won't be asked before Org-mode evaluates source code blocks. You may
+view this as a security risk. Always look over the code you're going
+to evaluate before submitting it.
 </p>
 
 <div class="org-src-container">
@@ -324,34 +458,56 @@ There is one more variable to set in your Emacs initialization file relating to 
 </div>
 </div>
 </div>
-<div id="outline-container-2-2" class="outline-3">
+<div id="outline-container-sec-2-2" class="outline-3">
 <h3 id="sec-2-2">Other supported languages</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-Besides R, which we just set up with the above source code block, see <a href="http://orgmode.org/manual/Languages.html#Languages" >here</a> for a list of languages that Org-mode currently supports. You can then add more languages to your personal setup if you desire, by modifying the variable we defined above to include more languages.
+Besides R, which we just set up with the above source code block, see
+<a href="http://orgmode.org/manual/Languages.html#Languages">here</a> for a list of languages that Org-mode currently supports. You can
+then add more languages to your personal setup if you desire, by
+modifying the variable we defined above to include more languages.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-3" class="outline-2">
+<div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3">Org-mode source code blocks</h2>
-<div id="outline-container-3-1" class="outline-3">
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
 <h3 id="sec-3-1">Exporting pretty-printed source code blocks</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-Before we see how to evaluate code in Org-mode, let's start off with looking at a what a typical Org-mode code block looks like. We just saw a couple examples above of Emacs lisp source code blocks. In what follows, we will be working with very simple R functions to show off the capabilities of Org-mode.
+Before we see how to evaluate code in Org-mode, let's start off with
+looking at a what a typical Org-mode code block looks like. We just
+saw a couple examples above of Emacs lisp source code blocks. In what
+follows, we will be working with very simple R functions to show off
+the capabilities of Org-mode.
 </p>
 
 <p>
-The following is a simple R code block in Org-mode. You can edit the code in its own buffer by typing C-c ' (that's a single quote), or just by editing the code within the Org-mode buffer. The nice thing about opening the code in its own buffer with C-c ', is that the buffer is then in ESS mode. All the ESS key bindings, interaction with the inferior R process, and syntax highlighting work as expected.
+The following is a simple R code block in Org-mode. You can edit the
+code in its own buffer by typing C-c ' (that's a single quote), or
+just by editing the code within the Org-mode buffer. The nice thing
+about opening the code in its own buffer with C-c ' is that the
+buffer is then in ESS mode. All the ESS key bindings, interaction with
+the inferior R process, and syntax highlighting work as expected.
 </p>
 
 <p>
-So here is an example of a source code block. The defining feature is the <code>#+BEGIN_SRC</code> and <code>#+END_SRC</code> lines, with the language definition, <code>R</code>, on the first line. 
+So here is an example of a source code block. The defining feature is
+the <code>#+BEGIN_SRC</code> and <code>#+END_SRC</code> lines, with the language definition,
+<code>R</code>, on the first line.
 </p>
 
 <p>
-Try opening this code block by putting point anywhere inside of it, and hitting C-c ' (that's a single quote). This will open a new buffer, with the contents of the source code block. You can then edit this buffer just like any other R file, as it is in R-mode from ESS. When finished editing, hit C-c ' again, and you'll see any changes you made reflected in this Org-mode buffer. You can control how this new buffer is displayed by setting the <code>org-src-window-setup</code> variable in Emacs.
+Try opening this code block by putting point anywhere inside of it,
+and hitting C-c ' (that's a single quote). This will open a new
+buffer, with the contents of the source code block. You can then edit
+this buffer just like any other R file, as it is in R-mode from
+ESS. When finished editing, hit C-c ' again, and you'll see any
+changes you made reflected in this Org-mode buffer. You can control
+how this new buffer is displayed by setting the <code>org-src-window-setup</code>
+variable in Emacs.
 </p>
 
 <div class="org-src-container">
@@ -366,37 +522,63 @@ square(1:10)
 </div>
 
 <p>
-So now we have this code block defined. Why would we want to do something like that with Org-mode? Mostly so that when we export an Org-mode document to a more human-readable format, Org-mode recognizes those lines as syntax, and highlights them appropriately in the HTML or LaTeX output. The lines will be syntax highlighted just like they would be in an R code buffer in Emacs.
+So now we have this code block defined. Why would we want to do
+something like that with Org-mode? Mostly so that when we export an
+Org-mode document to a more human-readable format, Org-mode recognizes
+those lines as syntax, and highlights them appropriately in the HTML
+or LaTeX output. The lines will be syntax highlighted just like they
+would be in an R code buffer in Emacs.
 </p>
 
 <p>
-Try this for yourself. With point anywhere in this subtree, for example, put it here [ ], hit <code>C-x n s</code> (that's a shortcut for <code>org-narrow-to-subtree</code>), finally hit <code>C-c C-e h o</code>. This subtree should be exported to an HTML file and displayed in your web browser. Notice how the source code is syntax highlighted. 
+Try this for yourself. With point anywhere in this subtree, for
+example, put it here [ ], hit <code>C-x n s</code> (that's a shortcut for
+<code>org-narrow-to-subtree</code>), finally hit <code>C-c C-e h o</code>. This subtree
+should be exported to an HTML file and displayed in your web
+browser. Notice how the source code is syntax highlighted.
 </p>
 
 <p>
-Note: for syntax highlighting in exported HTML to work, <code>htmlize.el</code> must be in your <code>load-path</code>. The easiest way to make that happen if you haven't already is to run the following Emacs lisp code, <b>after</b> changing the <code>/path/to</code> portion to reflect your local setup. The following can go in your Emacs init file. 
+Note: for syntax highlighting in exported HTML to work, <code>htmlize.el</code>
+must be in your <code>load-path</code>. The easiest way to make that happen if
+you haven't already is to run the following Emacs lisp code, <b>after</b>
+changing the <code>/path/to</code> portion to reflect your local setup. The
+following can go in your Emacs init file.
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp"> (add-to-list 'load-path <span style="color: #8b2252;">"/path/to/Org-mode/contrib/lisp"</span>)
+<pre class="src src-emacs-lisp"> (add-to-list 'load-path <span style="color: #8b2252;">"/path/to/org-mode/contrib/lisp"</span>)
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-3-2" class="outline-3">
+<div id="outline-container-sec-3-2" class="outline-3">
 <h3 id="sec-3-2">Evaluating the code block using Org-mode</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
-As mentioned, defining the above code block would be useful if we wanted to export the Org-mode document and have the R code in the resulting, say, HTML file, syntax highlighted. The feature that Org-mode now adds in version 7.01 is letting us actually submit the code block to R to compute results for either display or further computation.
+As mentioned, defining the above code block would be useful if we
+wanted to export the Org-mode document and have the R code in the
+resulting, say, HTML file, syntax highlighted. The feature that
+Org-mode now adds in version 7.01 is letting us actually submit the
+code block to R to compute results for either display or further
+computation.
 </p>
 
 <p>
-It is worth pointing out here that Org-mode works with many languages, and they can all be intertwined in a single Org-mode document. So you might get results from submitting an R function, and then pass those results to a Python or shell script through an org-table. Org-mode then becomes a meta-programming tool. We only concentrate on R code here, however.
+It is worth pointing out here that Org-mode works with many languages,
+and they can all be intertwined in a single Org-mode document. So you
+might get results from submitting an R function, and then pass those
+results to a Python or shell script through an org-table. Org-mode
+then becomes a meta-programming tool. We only concentrate on R code
+here, however.
 </p>
 
 <p>
-We did see above in the setup section that we have Emacs lisp code in this same Org-mode file. To be clear, you can mix many languages in the same file, which can be very useful when writing documentation, for instance.
+We did see above in the setup section that we have Emacs lisp code in
+this same Org-mode file. To be clear, you can mix many languages in
+the same file, which can be very useful when writing documentation,
+for instance.
 </p>
 
 <p>
@@ -404,11 +586,16 @@ Next, let's actually submit some R code.
 </p>
 </div>
 
-<div id="outline-container-3-2-1" class="outline-4">
+<div id="outline-container-sec-3-2-1" class="outline-4">
 <h4 id="sec-3-2-1">Obtaining the return value of an R code block</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <p>
-We will now see how to submit a code block. Just as in the Introduction with Emacs lisp code, simply hit <code>C-c C-c</code> anywhere in the code block to submit it to R. If you didn't set the confirmation variable to <code>nil</code> as described above, you'll have to confirm that you want to evaluate the following R code. So go ahead, evaluate the following R code block with <code>C-c C-c</code> and see what happens. 
+We will now see how to submit a code block. Just as in the
+Introduction with Emacs lisp code, simply hit <code>C-c C-c</code> anywhere in
+the code block to submit it to R. If you didn't set the confirmation
+variable to <code>nil</code> as described above, you'll have to confirm that you
+want to evaluate the following R code. So go ahead, evaluate the
+following R code block with <code>C-c C-c</code> and see what happens.
 </p>
 
 <div class="org-src-container">
@@ -421,7 +608,7 @@ We will now see how to submit a code block. Just as in the Introduction with Ema
 </pre>
 </div>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" >
 
 
 <colgroup>
@@ -471,19 +658,38 @@ We will now see how to submit a code block. Just as in the Introduction with Ema
 </table>
 
 <p>
-If you've submitted the code block using <code>C-c C-c</code>, and everything went well, you should have noticed that your buffer was modified. Org-mode has inserted a results section underneath the code block, and above this text. These results are from running the R code block, and recording the last value. This is just like how R returns the last value of a function as its return value. Notice how the results have been inserted as an org-table. This can be very useful. However, what if we wanted to see the standard R output? You will see how to do that in the next section.
+If you've submitted the code block using <code>C-c C-c</code>, and everything
+went well, you should have noticed that your buffer was
+modified. Org-mode has inserted a results section underneath the code
+block, and above this text. These results are from running the R code
+block, and recording the last value. This is just like how R returns
+the last value of a function as its return value. Notice how the
+results have been inserted as an org-table. This can be very
+useful. However, what if we wanted to see the standard R output? You
+will see how to do that in the next section.
 </p>
 
 <p>
-You can also try changing the source code block, and re-running it. For example, try changing the call to the <code>square</code> function to <code>1:12</code>, then hit <code>C-c C-c</code> again. The results have updated to the new value!
+You can also try changing the source code block, and re-running
+it. For example, try changing the call to the <code>square</code> function to
+<code>1:12</code>, then hit <code>C-c C-c</code> again. The results have updated to the new
+value!
 </p>
 </div>
 </div>
-<div id="outline-container-3-2-2" class="outline-4">
+<div id="outline-container-sec-3-2-2" class="outline-4">
 <h4 id="sec-3-2-2">Obtaining all code block output</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <p>
-We just saw how the last value after evaluating our code is put into an Org-mode table by default. That is potentially very useful, but what if we just want to see the R output as it would appear printed in the R console? Well, just as R function have arguments, Org-mode source blocks have arguments. One of the arguments controls how the output is displayed, the <code>:results</code> argument. It is set to 'value' by default, but we can change it to 'output' to see the usual R output. Notice the syntax for setting source code block arguments below.
+We just saw how the last value after evaluating our code is put into
+an Org-mode table by default. That is potentially very useful, but
+what if we just want to see the R output as it would appear printed in
+the R console? Well, just as R function have arguments, Org-mode
+source blocks have arguments. One of the arguments controls how the
+output is displayed, the <code>:results</code> argument. It is set to <code>value</code> by
+default, but we can change it to <code>output</code> to see the usual R
+output. Notice the syntax for setting source code block arguments
+below.
 </p>
 
 <div class="org-src-container">
@@ -502,7 +708,11 @@ We just saw how the last value after evaluating our code is put into an Org-mode
 
 
 <p>
-Now we see the typical R notation for printing a vector. Note in the following example that setting <code>:results output</code> captures <b>all</b> function output, not just the return value. We capture things printed to the screen with the <code>cat</code> function for example, or the printing of the variable <code>x</code>.
+Now we see the typical R notation for printing a vector. Note in the
+following example that setting <code>:results output</code> captures <b>all</b>
+function output, not just the return value. We capture things printed
+to the screen with the <code>cat</code> function for example, or the printing of
+the variable <code>x</code>.
 </p>
 
 <div class="org-src-container">
@@ -525,19 +735,23 @@ This is the square function.
 </pre>
 
 <p>
-Try changing the <code>:results</code> argument to <code>value</code> (which is the same as omitting it completely), and re-run the above code block. You should see the same org-table output as we saw above.
+Try changing the <code>:results</code> argument to <code>value</code> (which is the same as
+omitting it completely), and re-run the above code block. You should
+see the same org-table output as we saw above.
 </p>
 </div>
 </div>
-<div id="outline-container-3-2-3" class="outline-4">
+<div id="outline-container-sec-3-2-3" class="outline-4">
 <h4 id="sec-3-2-3">More information on Org-mode source block headers</h4>
 <div class="outline-text-4" id="text-3-2-3">
 <p>
-See <a href="http://orgmode.org/manual/Header-arguments.html#Header-arguments" >here</a> for more information on source code block header arguments, including the various ways they can be set in an Org-mode document: per block, per file, or system-wide.
+See <a href="http://orgmode.org/manual/Header-arguments.html#Header-arguments">here</a> for more information on source code block header arguments,
+including the various ways they can be set in an Org-mode document:
+per block, per file, or system-wide.
 </p>
 </div>
 </div>
-<div id="outline-container-3-2-4" class="outline-4">
+<div id="outline-container-sec-3-2-4" class="outline-4">
 <h4 id="sec-3-2-4">Inline code evaluation</h4>
 <div class="outline-text-4" id="text-3-2-4">
 <p>
@@ -557,29 +771,43 @@ SRC_R[:exports results]{round(pi, 2)}
 </pre>
 
 <p>
-and you will see <code>3.14</code> in the exported output.  You'll see examples of how to use the <code>:exports</code> code block header in a few sections.
+and you will see in the exported
+output.  You'll see examples of how to use the <code>:exports</code> code block
+header in a few sections.
 </p>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-4" class="outline-2">
+<div id="outline-container-sec-4" class="outline-2">
 <h2 id="sec-4">Passing data between code blocks</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-One of the biggest limitations to using code blocks like above is that a new R session is started up `behind the scenes` when we evaluate each code block. So, if we define a function in one code block, and want to use it another code block later on, we are out of luck. This limitation can be overcome by using R session-based evaluation, which sends the R code to a running ESS process.
+One of the biggest limitations to using code blocks like above is that
+a new R session is started up "behind the scenes" when we evaluate
+each code block. So, if we define a function in one code block, and
+want to use it another code block later on, we are out of luck. This
+limitation can be overcome by using R session-based evaluation, which
+sends the R code to a running ESS process.
 </p>
 </div>
 
-<div id="outline-container-4-1" class="outline-3">
+<div id="outline-container-sec-4-1" class="outline-3">
 <h3 id="sec-4-1">R session-based evaluation</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
-Often in R, we will define functions or objects in one code block and want to use these objects in subsequent code blocks. However, each time we submit a code block using <code>C-c C-c</code>, Org-mode is firing up an R session, submitting the code, obtaining the return values, and closing down R. So, by default, our R objects aren't persistent! That's an important point. Fortunately, there is an easy way to tell Org-mode to submit our code blocks to a running R process in Emacs, just like we do with R files in ESS.
+Often in R, we will define functions or objects in one code block and
+want to use these objects in subsequent code blocks. However, each
+time we submit a code block using <code>C-c C-c</code>, Org-mode is firing up an
+R session, submitting the code, obtaining the return values, and
+closing down R. So, by default, our R objects aren't persistent!
+That's an important point. Fortunately, there is an easy way to tell
+Org-mode to submit our code blocks to a running R process in Emacs,
+just like we do with R files in ESS.
 </p>
 
 <p>
-You simply use the <code>:session</code> argument to the Org-mode source block.   
+You simply use the <code>:session</code> argument to the Org-mode source block.
 </p>
 
 <div class="org-src-container">
@@ -592,7 +820,9 @@ You simply use the <code>:session</code> argument to the Org-mode source block.
 </div>
 
 <p>
-So, the above code block defines our function (<code>square</code>) and object (<code>x</code>). Now we want to apply call our <code>square</code> function with the <code>x</code> object. Without <code>:session</code>, we could not do this.
+So, the above code block defines our function (<code>square</code>) and object
+(<code>x</code>). Now we want to apply call our <code>square</code> function with the <code>x</code>
+object. Without <code>:session</code>, we could not do this.
 </p>
 
 <div class="org-src-container">
@@ -601,57 +831,10 @@ So, the above code block defines our function (<code>square</code>) and object (
 </pre>
 </div>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col class="right"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="right">1</td>
-</tr>
-
-<tr>
-<td class="right">4</td>
-</tr>
-
-<tr>
-<td class="right">9</td>
-</tr>
-
-<tr>
-<td class="right">16</td>
-</tr>
-
-<tr>
-<td class="right">25</td>
-</tr>
-
-<tr>
-<td class="right">36</td>
-</tr>
-
-<tr>
-<td class="right">49</td>
-</tr>
-
-<tr>
-<td class="right">64</td>
-</tr>
-
-<tr>
-<td class="right">81</td>
-</tr>
-
-<tr>
-<td class="right">100</td>
-</tr>
-</tbody>
-</table>
-
 <p>
-Running the above code block will result in an error, since a new R session was started, and our objects were not available. Now try the same code block, but with the <code>:session</code> argument, as below. 
+Running the above code block will result in an error, since a new R
+session was started, and our objects were not available. Now try the
+same code block, but with the <code>:session</code> argument, as below.
 </p>
 
 <div class="org-src-container">
@@ -665,28 +848,39 @@ Running the above code block will result in an error, since a new R session was 
 </pre>
 
 <p>
-The results we expect are now inserted, since we submitted this code block to the same R session where the square function was defined.
+The results we expect are now inserted, since we submitted this code
+block to the same R session where the square function was defined.
 </p>
 </div>
 </div>
-<div id="outline-container-4-2" class="outline-3">
+<div id="outline-container-sec-4-2" class="outline-3">
 <h3 id="sec-4-2">Code blocks using different languages</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
-Even though this tutorial covers the R language, one of Org-mode's main strengths is its ability to act as a meta programming language, using results from a program written in one language as input to a program in another language.
+Even though this tutorial covers the R language, one of Org-mode's
+main strengths is its ability to act as a meta programming language,
+using results from a program written in one language as input to a
+program in another language.
 </p>
 
 <p>
-See <a href="http://orgmode.org/worg/org-contrib/babel/intro.php#meta-programming-language" >here</a> for an example of this. To keep things as focused on R as possible, this tutorial does not include an example like the one found in the link.
+See <a href="http://orgmode.org/worg/org-contrib/babel/intro.php#meta-programming-language">here</a> for an example of this. To keep things as focused on R as
+possible, this tutorial does not include an example like the one found
+in the link.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-5" class="outline-2">
+<div id="outline-container-sec-5" class="outline-2">
 <h2 id="sec-5">Inserting R graphical output</h2>
 <div class="outline-text-2" id="text-5">
 <p>
-Here is a really cool feature of evaluating source code in Org-mode. We can insert images generated by R code blocks inline in our Emacs buffer! To enable this functionality, we need to evaluate a bit of Emacs lisp code. If this feature is something you want every time you use Org-mode, consider placing the code in your Emacs initialization file. Either way, evaluate it with <code>C-c C-c</code>.
+Here is a really cool feature of evaluating source code in
+Org-mode. We can insert images generated by R code blocks inline in
+our Emacs buffer! To enable this functionality, we need to evaluate a
+bit of Emacs lisp code. If this feature is something you want every
+time you use Org-mode, consider placing the code in your Emacs
+initialization file. Either way, evaluate it with <code>C-c C-c</code>.
 </p>
 
 <div class="org-src-container">
@@ -697,20 +891,38 @@ Here is a really cool feature of evaluating source code in Org-mode. We can inse
 </div>
 
 <p>
-The following R code generates some graphical output. There are several things to notice.
+The following R code generates some graphical output. There are
+several things to notice.
 </p>
 
 <ol class="org-ol">
-<li><code>:results output</code> is specified. This is because the figure is generated using the <code>ggplot2</code> package in R, which is based on something called 'grid' graphics. Grid graphics need to be explicitly printed when called within a function for their output to be displayed. See, for example, <a href="http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-do-lattice_002ftrellis-graphics-not-work_003f" >R FAQ 7.22</a>. When <code>:results value</code> (the default) is active, Org-mode is generating an R function wrapper. The upshot is: when generating grid-based graphical output within Org-mode, you need to either use <code>:results output</code>, wrap the graphical function in a print call, or use the <code>:session</code> argument. See this mailing list <a href="http://www.mail-archive.com/emacs-orgmode@gnu.org/msg25944.html" >post</a> for more explanation if you'd like.
+<li><code>:results output</code> is specified. This is because the figure is
+generated using the <code>ggplot2</code> package in R, which is based on
+something called 'grid' graphics. Grid graphics need to be
+explicitly printed when called within a function for their output
+to be displayed. See, for example, <a href="http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-do-lattice_002ftrellis-graphics-not-work_003f">R FAQ 7.22</a>. When <code>:results
+   value</code> (the default) is active, Org-mode is generating an R
+function wrapper. The upshot is: when generating grid-based
+graphical output within Org-mode, you need to either use <code>:results
+   output</code>, wrap the graphical function in a print call, or use the
+<code>:session</code> argument. See this mailing list <a href="http://www.mail-archive.com/emacs-orgmode@gnu.org/msg25944.html">post</a> for more
+explanation if you'd like.
 </li>
 
-<li>We use a new source code block argument, <code>:file</code>. This argument will capture graphical output from the source block and generate a file with the given name. Then, the results section becomes an Org-mode link to the newly created file. In the example below, the file generated is called <code>diamonds.png</code>.
-
-<p>
-Finally, If you have defined the Emacs lisp code for inline-image support above, an overlay of the file will be inserted inline in the actual Org-mode document! Run the following source code block to see how it works.
-</p>
+<li>We use a new source code block argument, <code>:file</code>. This argument
+will capture graphical output from the source block and generate a
+file with the given name. Then, the results section becomes an
+Org-mode link to the newly created file. In the example below, the
+file generated is called <code>diamonds.png</code>.
 </li>
 </ol>
+
+<p>
+Finally, if you have defined the Emacs lisp code for inline-image
+support above, an overlay of the file will be inserted inline in the
+actual Org-mode document! Run the following source code block to see
+how it works.
+</p>
 
 <div class="org-src-container">
 
@@ -724,36 +936,49 @@ Finally, If you have defined the Emacs lisp code for inline-image support above,
 
 <div class="figure">
 <p><img src="diamonds.png"  alt="diamonds.png"/></p>
-<p></p>
 </div>
 
 <p>
-This opens up many opportunities for doing interesting things with R within your Org-mode documents!
+This opens up many opportunities for doing interesting things with R
+within your Org-mode documents!
 </p>
 </div>
 </div>
-<div id="outline-container-6" class="outline-2">
+<div id="outline-container-sec-6" class="outline-2">
 <h2 id="sec-6">Inserting LaTeX output</h2>
 <div class="outline-text-2" id="text-6">
 <p>
-We have just seen how to include graphical output in our Org-mode buffer. We can also do something similar with LaTeX output generated by R. Of course, this requires at least a working LaTeX installation. You will also need to install the dvipng program (<code>dvipng</code> package in Ubuntu, for instance). See the System Requirements section for other prerequisites.
+We have just seen how to include graphical output in our Org-mode
+buffer. We can also do something similar with LaTeX output generated
+by R. Of course, this requires at least a working LaTeX
+installation. You will also need to install the dvipng program
+(<code>dvipng</code> package in Ubuntu, for instance). See the System
+Requirements section for other prerequisites.
 </p>
 </div>
 
-<div id="outline-container-6-1" class="outline-3">
+<div id="outline-container-sec-6-1" class="outline-3">
 <h3 id="sec-6-1">A simple example</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
-Let's work on a very simple example, displaying a LaTeX description in our Org-mode buffer, using the official LaTeX logo. We will use R to generate the code that will display the official logo. There's obviously no reason to do this except for demonstration purposes. 
+Let's work on a very simple example, displaying a LaTeX description in
+our Org-mode buffer, using the official LaTeX logo. We will use R to
+generate the code that will display the official logo. There's
+obviously no reason to do this except for demonstration purposes.
 </p>
 
 <p>
-First we must define an R source block that generates some LaTeX code that displays the logo. That's fairly straightforward. Notice we have given the source code block a name, so that we can call it later. We use the <code>#+name</code> syntax to do this. Note that you <b>don't</b> have to run the following code block, it will be run automatically by the next one.
+First we must define an R source block that generates some LaTeX code
+that displays the logo. That's fairly straightforward. Notice we have
+given the source code block a name, so that we can call it later. We
+use the <code>#+NAME</code> syntax to do this. Note that you <b>don't</b> have to run
+the following code block, it will be run automatically by the next
+one.
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-R">  <span style="color: #0000ff;">latexlogo</span> <span style="color: #008b8b;">&lt;-</span> <span style="color: #a020f0;">function</span>() {
+<pre class="src src-R" id="R-latex">  <span style="color: #0000ff;">latexlogo</span> <span style="color: #008b8b;">&lt;-</span> <span style="color: #a020f0;">function</span>() {
       <span style="color: #8b2252;">"\\LaTeX"</span>
   }
   
@@ -762,15 +987,32 @@ First we must define an R source block that generates some LaTeX code that displ
 </div>
 
 <p>
-Next, we define a new source block using the <code>latex</code> language, instead of <code>R</code>, as we have been using. If we use a <code>:file</code> argument with a LaTeX source code block, Org-mode will generate a file of the resulting DVI file that LaTeX produces, and display it. This is just like generating graphical output from R using a <code>:file</code> argument, so there is nothing new there.
+Next, we define a new source block using the <code>latex</code> language, instead
+of <code>R</code>, as we have been using. If we use a <code>:file</code> argument with a
+LaTeX source code block, Org-mode will generate a file of the
+resulting DVI file that LaTeX produces, and display it. This is just
+like generating graphical output from R using a <code>:file</code> argument, so
+there is nothing new there.
 </p>
 
 <p>
-However, note we have a new argument, <code>:noweb</code>. What does that mean? In short, it let's us use syntax like <code><<CodeBlock()>></code> to insert the results of running a code block named <code>CodeBlock</code> into another source code block. So, in our example, we're running the <code>R-latex</code> code block defined above, and inserting the results, which need to be valid LaTeX code, into our <code>latex</code> code block. For this example, we of course didn't need to write an R function to generate such simple LaTeX output, but it can be much more complicated, as our next example shows. In short, our R code block is helping to write the LaTeX code block for us.
+However, note we have a new argument, <code>:noweb</code>. What does that mean?
+In short, it let's us use syntax like <code>&lt;&lt;CodeBlock()&gt;&gt;</code> to insert the
+results of running a code block named <code>CodeBlock</code> into another source
+code block. So, in our example, we're running the <code>R-latex</code> code block
+defined above, and inserting the results, which need to be valid LaTeX
+code, into our <code>latex</code> code block. For this example, we of course
+didn't need to write an R function to generate such simple LaTeX
+output, but it can be much more complicated, as our next example
+shows. In short, our R code block is helping to write the LaTeX code
+block for us.
 </p>
 
 <p>
-Noweb was not invented for Org-mode, it's been around for a while, and is used in Sweave, for example. See <a href="http://en.wikipedia.org/wiki/Noweb" >its Wikipedia page</a>. The <code>:noweb</code> argument is set to 'no' be default, because the <code><<X>></code> syntax is actually valid in some languages that Org-mode supports.
+Noweb was not invented for Org-mode, it's been around for a while, and
+is used in Sweave, for example. See <a href="http://en.wikipedia.org/wiki/Noweb">its Wikipedia page</a>. The <code>:noweb</code>
+argument is set to 'no' be default, because the <code>&lt;&lt;X&gt;&gt;</code> syntax is
+actually valid in some languages that Org-mode supports.
 </p>
 
 <p>
@@ -778,27 +1020,39 @@ Run the following code block. The <code>R-latex</code> R code block will be run,
 </p>
 </div>
 </div>
-<div id="outline-container-6-2" class="outline-3">
+<div id="outline-container-sec-6-2" class="outline-3">
 <h3 id="sec-6-2">A more complicated example, exporting LaTeX in buffer, to HTML, and to PDF</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
-Now let's try something a little more complex, using an R function that generates a full LaTeX table. This particular example depends on having the R package Hmisc installed. If you don't have it installed, start up R and then do: <code>> install.packages("Hmisc")</code>
+Now let's try something a little more complex, using an R function
+that generates a full LaTeX table. This particular example depends on
+having the R package Hmisc installed. If you don't have it installed,
+start up R and then do: <code>&gt; install.packages("Hmisc")</code>.
 </p>
 
 <p>
-What follows is an R source block that generates some LaTeX code representing a table.  We want to be able to insert a <code>png</code> image of the table in the buffer when run with <code>C-c C-c</code>, using the colors of our current Emacs buffer.
+What follows is an R source block that generates some LaTeX code
+representing a table.  We want to be able to insert a <code>png</code> image of
+the table in the buffer when run with <code>C-c C-c</code>, using the colors of
+our current Emacs buffer.
 </p>
 
 <p>
-A few sections from now, I'll touch on the exporting features of Org-mode.  Org can generate HTML and PDF versions of documents like this one.
+A few sections from now, we'll touch on the exporting features of
+Org-mode.  Org can generate HTML and PDF versions of documents like
+this one.
 </p>
 
 <p>
-Back to our example, for HTML export, we also want to generate a <code>png</code>. However, we want the background to be transparent, not whatever color our Emacs buffer happened to be.
+Back to our example, for HTML export, we also want to generate a
+<code>png</code>. However, we want the background to be transparent, not whatever
+color our Emacs buffer happened to be.
 </p>
 
 <p>
-For LaTeX output, we don't need a <code>png</code> file at all, we would of course prefer to simply insert the auto-generated LaTeX code in the exported LaTeX document, and then compile to PDF. 
+For LaTeX output, we don't need a <code>png</code> file at all, we would of
+course prefer to simply insert the auto-generated LaTeX code in the
+exported LaTeX document, and then compile to PDF.
 </p>
 
 <p>
@@ -806,62 +1060,86 @@ The following should accomplish all three goals.
 </p>
 
 <p>
-We tell the R code block to output latex code using the syntax <code>:results output latex</code>.  Also, only export the results.  If we export both, then the LaTeX results would get exported twice when we export to PDF, once from each code block.  It would actually be exported twice when we export to HTML, but in that case, since the results are wrapped in <code>#+BEGIN_LATEX/#+END_LATEX</code> lines, and are therefore not included in the HTML export.
+We tell the R code block to output LaTeX code using the syntax
+<code>:results output latex</code>.  Also, only export the results.  If we export
+both, then the LaTeX results would get exported twice when we export
+to PDF, once from each code block.  It would actually be exported
+twice when we export to HTML, but in that case, since the results are
+wrapped in <code>#+BEGIN_LATEX/#+END_LATEX</code> lines, and are therefore not
+included in the HTML export.
 </p>
 
 <p>
-In the LaTeX code block, a file will be generated for in-buffer evaluation and HTML export, but we don't want it produced for LaTeX export, otherwise the image <i>and</i> the actual table will be included in the PDF.  
+In the LaTeX code block, a file will be generated for in-buffer
+evaluation and HTML export, but we don't want it produced for LaTeX
+export, otherwise the image <i>and</i> the actual table will be included in
+the PDF.
 </p>
-
-<p>
-The final <code>:buffer</code> argument controls the color selection through the <code>org-format-latex-options</code> variable. Essentially, if <code>:buffer</code> is set to 'yes', your Emacs buffer colors will be used as arguments to the <code>dvipng</code> program used to produce the image, assuming you don't change that values of the elements to something other than 'default' in <code>org-format-latex-options</code>. If <code>:buffer</code> is 'no', then the <code>html*</code> elements of that variable will be used.
-</p>
-
-
-<div class="figure">
-<p><img src="hmisc.png"  alt="hmisc.png"/></p>
-<p></p>
 </div>
 </div>
 </div>
-</div>
-<div id="outline-container-7" class="outline-2">
+<div id="outline-container-sec-7" class="outline-2">
 <h2 id="sec-7">Putting it all together, a notebook interface to R</h2>
 <div class="outline-text-2" id="text-7">
 <p>
-Combining the techniques shown above: submitting code blocks, capturing output for further manipulation, and inserting graphical and tabular material, we essentially have a basic notebook-style interface for R.
+Combining the techniques shown above: submitting code blocks,
+capturing output for further manipulation, and inserting graphical and
+tabular material, we essentially have a basic notebook-style interface
+for R.
 </p>
 
 <p>
-This is potentially useful for countless tasks such as: a laboratory notebook, time series analysis of diet/exercise habits, tracking your favorite baseball team over the course of a season, or any reporting task you can think of. Since Org-mode is a general-purpose authoring tool, with very strong exporting capabilities, almost anything is possible.
+This is potentially useful for countless tasks such as: a laboratory
+notebook, time series analysis of diet/exercise habits, tracking your
+favorite baseball team over the course of a season, or any reporting
+task you can imagine. Since Org-mode is a general-purpose authoring
+tool, with very strong exporting capabilities, almost anything is
+possible.
 </p>
 
 <p>
-For instance, some people use Org-mode to generate HTML for blogs that they run. Several posters to the Org-mode mailing list have mentioned writing their entire graduate theses in Org-mode, and even books.
+For instance, some people use Org-mode to generate HTML for blogs that
+they run. Several posters to the Org-mode mailing list have mentioned
+writing their entire graduate theses in Org-mode, and even books.
 </p>
 
 <p>
-This workflow serves as an alternative to the excellent <a href="http://www.stat.uni-muenchen.de/~leisch/Sweave/" >Sweave</a> package that cuts out the need for learning LaTeX to produce high-quality documents. Org-mode is doing all the exporting for you, including LaTeX if you'd like. Getting LaTeX and HTML output essentially "for free" should not be underestimated!
+This workflow serves as an alternative to the excellent <a href="http://www.stat.uni-muenchen.de/~leisch/Sweave/">Sweave</a> package
+that cuts out the need for learning LaTeX to produce high-quality
+documents. Org-mode is doing all the exporting for you, including
+LaTeX if you'd like. Getting LaTeX and HTML output essentially "for
+free" should not be underestimated!
 </p>
 
 <p>
-On some level, all these activities assume that you are a comfortable Org-mode user, and that you will be writing code, conducting analyses, and possibly exporting results through the familiar Emacs and Org-mode user interface. Through the exporting functionality, Org-mode offers many useful and easy-to-use options to share <i>results</i> of your efforts with others, but what about the code itself? 
+On some level, all these activities assume that you are a comfortable
+Org-mode user, and that you will be writing code, conducting analyses,
+and possibly exporting results through the familiar Emacs and Org-mode
+user interface. Through the exporting functionality, Org-mode offers
+many useful and easy-to-use options to share <i>results</i> of your efforts
+with others, but what about the code itself?
 </p>
 
 <p>
-Most people you have to share code with aren't going to want an Org-mode file full of source code!
+Most people you have to share code with aren't going to want an
+Org-mode file full of source code!
 </p>
 </div>
 </div>
-<div id="outline-container-8" class="outline-2">
+<div id="outline-container-sec-8" class="outline-2">
 <h2 id="sec-8">Tangling code</h2>
 <div class="outline-text-2" id="text-8">
 <p>
-With many projects, you will have to share <i>code</i> with other programmers, who are most likely not going to be programming in Org-mode. Therefore, sharing an Org-mode file full of code is not an option.
+With many projects, you will have to share <i>code</i> with other
+programmers who are most likely not going to be programming in
+Org-mode. Therefore, sharing an Org-mode file full of code is not an
+option.
 </p>
 
 <p>
-Or, consider development of an R package. The package building process obviously operates on <code>.R</code> files, each full of R functions. However, that's not what we have in a document like this one.
+Or, consider development of an R package. The package building process
+obviously operates on <code>.R</code> files, each full of R functions. However,
+that's not what we have in a document like this one.
 </p>
 
 <p>
@@ -869,7 +1147,11 @@ It is in situations like these where <i>tangling</i> can be used.
 </p>
 
 <p>
-The process of tangling an Org-mode document essentially extracts the code contained in Org-mode source code blocks, and places it in a file of the appropriate type. How do we do this? We use the <code>:tangle</code> source code block header argument to direct Org-mode what to do. Then, we call the tangle function on the file to extract the source code!
+The process of tangling an Org-mode document essentially extracts the
+code contained in Org-mode source code blocks, and places it in a file
+of the appropriate type. How do we do this? We use the <code>:tangle</code>
+source code block header argument to direct Org-mode what to do. Then,
+we call the tangle function on the file to extract the source code!
 </p>
 
 <p>
@@ -877,15 +1159,18 @@ Read on to learn how to perform each of these steps.
 </p>
 </div>
 
-<div id="outline-container-8-1" class="outline-3">
+<div id="outline-container-sec-8-1" class="outline-3">
 <h3 id="sec-8-1">Instructing Org-mode how to tangle with header arguments</h3>
 <div class="outline-text-3" id="text-8-1">
 <p>
-Let's take a look at a few examples. Each example contains an R comment, so that you can see in the resulting <code>.R</code> file where it came from.
+Let's take a look at a few examples. Each example contains an R
+comment so that you can see in the resulting <code>.R</code> file where it came
+from.
 </p>
 
 <p>
-This first example will not extract any code from the source block. It is the default behavior. 
+This first example will not extract any code from the source block. It
+is the default behavior.
 </p>
 
 <div class="org-src-container">
@@ -897,7 +1182,9 @@ print(x)
 </div>
 
 <p>
-This will place the code in source code block in <code>Org-mode-R-tutorial.R</code>, since we don't specify a filename for the <code>.R</code> file.
+The following will place the code in source code block in
+<code>org-mode-R-tutorial.R</code> since we don't specify a filename for the
+<code>.R</code> file.
 </p>
 
 <div class="org-src-container">
@@ -909,7 +1196,8 @@ print(x)
 </div>
 
 <p>
-This will place the tangled code in <code>Rcode.R</code>, since we specify that name. 
+The following will place the tangled code in <code>Rcode.R</code>, since we
+specify that name.
 </p>
 
 <div class="org-src-container">
@@ -921,19 +1209,25 @@ print(x)
 </div>
 
 <p>
-Note that we will have multiple source code blocks in an Org-mode file, and they might have different types. For example, we might have R and Python code in the same document, but different source blocks. 
+Note that we will have multiple source code blocks in an Org-mode
+file, and they might have different types. For example, we might have
+R and Python code in the same document, but different source blocks.
 </p>
 
 <p>
-This is no problem, as the tangling mechanism will generate appropriate files of each type, containing only the code of that type.
+This is no problem as the tangling mechanism will generate appropriate
+files of each type containing only the code of that type.
 </p>
 
 <p>
-Finally, you can specify the <code>:tangle</code> argument as a buffer-wide setting, so that you don't have to specify it for every source code block.
+Finally, you can specify the <code>:tangle</code> argument as a buffer-wide
+setting, so that you don't have to specify it for every source code
+block.
 </p>
 
 <p>
-This opens up exciting possibilities like having a <b>single</b> Org-mode file that includes:
+This opens up exciting possibilities like having a <b>single</b> Org-mode
+file that includes:
 </p>
 <ul class="org-ul">
 <li>all code for an R package
@@ -942,7 +1236,7 @@ This opens up exciting possibilities like having a <b>single</b> Org-mode file t
 </li>
 <li>unit tests for the package
 </li>
-<li>material to generate slides for presentations, through <code>org-beamer</code>
+<li>material to generate slides for presentations, through <code>ox-beamer</code>
 </li>
 <li>notes taken during package development 
 </li>
@@ -953,89 +1247,129 @@ This opens up exciting possibilities like having a <b>single</b> Org-mode file t
 </ul>
 </div>
 </div>
-<div id="outline-container-8-2" class="outline-3">
+<div id="outline-container-sec-8-2" class="outline-3">
 <h3 id="sec-8-2">Tangling the document</h3>
 <div class="outline-text-3" id="text-8-2">
 <p>
-Now that we have seen how to instruct Org-mode how to produce source code files from our Org-mode document, how do we actually tangle the document?
+Now that we have seen how to instruct Org-mode how to produce source
+code files from our Org-mode document, how do we actually tangle the
+document?
 </p>
 
 <p>
-We simply have to call the <code>org-babel-tangle</code> function, bound by default to <code>C-c C-v C-t</code>. 
+We simply have to call the <code>org-babel-tangle</code> function, bound by
+default to <code>C-c C-v t</code>.
 </p>
 
 <p>
-Org-mode confirms in the minibuffer how many code blocks have been tangled, and inspecting the file system should show that your source code files have been created. There exists a hook function that will run any post-processing programs you have defined, for example, a compiler, <code>R CMD build</code>, or running <code>make</code> with a Makefile, possibly itself generated from the Org-mode document!
+Org-mode confirms in the minibuffer how many code blocks have been
+tangled, and inspecting the file system should show that your source
+code files have been created. There exists a hook function that will
+run any post-processing programs you have defined, for example, a
+compiler, <code>R CMD build</code>, or running <code>make</code> with a Makefile, possibly
+itself generated from the Org-mode document!
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-9" class="outline-2">
+<div id="outline-container-sec-9" class="outline-2">
 <h2 id="sec-9">Exporting documents containing code and results</h2>
 <div class="outline-text-2" id="text-9">
 <p>
-Org-mode provides a rich set of functions and customizations for exporting documents into more human-readable forms, and for users who are not Emacs or Org-mode users. The most common methods are generating PDF documents through LaTeX, and HTML output. Source code will be syntax highlighted, in HTML.  There are various options for PDF, including using the listings package.
+Org-mode provides a rich set of functions and customizations for
+exporting documents into more human-readable forms, and for users who
+are not Emacs or Org-mode users. The most common methods are
+generating PDF documents through LaTeX, and HTML output. Source code
+will be syntax highlighted in HTML.  There are various options for
+PDF including using the <code>listings</code> package.
 </p>
 
 <p>
-With Org-mode source blocks, you can choose to export the source code, the results of evaluating the source code, neither, or both. The <code>:exports</code> header argument controls this. See the <a href="http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks" >documentation</a> for further examples. 
+With Org-mode source blocks, you can choose to export the source code,
+the results of evaluating the source code, neither, or both. The
+<code>:exports</code> header argument controls this. See the <a href="http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks">documentation</a> for
+further examples.
 </p>
 
 <p>
-As an example, type <code>C-c C-e h o</code> to see an HTML version of this document.
+As an example, type <code>C-c C-e h o</code> to see an HTML version of this
+document.
 </p>
 
 <p>
-Some fairly sophisticated processes, including complete report generation using R graphics and tables, can be achieved through this facility.
+Some fairly sophisticated processes, including complete report
+generation using R graphics and tables, can be achieved through this
+facility.
 </p>
 
 <p>
-Using Org-mode in this manner is essentially an alternative to Sweave, with the advantages of:
+Using Org-mode in this manner is essentially an alternative to Sweave,
+with the advantages of:
 </p>
 <ul class="org-ul">
-<li>do not need to learn LaTeX or other markup language
+<li>you do not need to learn LaTeX or other markup language
 </li>
 <li>any future Org-mode export engines will be available to you
 </li>
-<li>writing code in Org-mode gives you access to a hyper-commenting system, with features such as TODO items, in-document linking, tags, and code folding.
+<li>writing code in Org-mode gives you access to a hyper-commenting
+system, with features such as TODO items, in-document linking, tags,
+and code folding.
 </li>
 </ul>
 
 <p>
-If you're an advanced LaTeX user, you probably don't view point 1 above as an advantage. :) 
+If you're an advanced LaTeX user, you probably don't view point 1
+above as an advantage. :)
 </p>
 
 <p>
-Whether or not you use all the features that Org-mode provides, you can use the system for literate programming and reproducible research, on projects large and small.
+Whether or not you use all the features that Org-mode provides, you
+can use the system for literate programming and reproducible research,
+on projects large and small.
 </p>
 </div>
 </div>
-<div id="outline-container-10" class="outline-2">
+<div id="outline-container-sec-10" class="outline-2">
 <h2 id="sec-10">Where to go from here?</h2>
 <div class="outline-text-2" id="text-10">
 <p>
-We have seen how to submit R code for evaluation in Org-mode. There are many good reasons to do this, including tying results to source code, code folding, exporting of code and results into many common formats, improving documentation, and the innumerable features that Org-mode provides, and will continue to provide in the future. 
+We have seen how to submit R code for evaluation in Org-mode. There
+are many good reasons to do this, including tying results to source
+code, code folding, exporting of code and results into many common
+formats, improving documentation, and the innumerable features that
+Org-mode provides, and will continue to provide in the future.
 </p>
 
 <p>
-As with all new processes, it can be a challenge to start working with source code this way.  For what to do next, try looking at the <a href="http://orgmode.org/worg/org-contrib/babel/uses.php" >results</a> of some of those who use Org-mode to accomplish interesting things. You can look at current documentation for R support <a href="http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html" >here</a>.
+As with all new processes, it can be a challenge to start working with
+source code this way.  For what to do next, try looking at the <a href="http://orgmode.org/worg/org-contrib/babel/uses.html">results</a>
+of some of those who use Org-mode to accomplish interesting
+things. You can look at current documentation for R support <a href="http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html">here</a>.
 </p>
 
 <p>
-For an exercise in using Org-mode with source code, you can write your Emacs initialization file in Org-mode! These <a href="http://orgmode.org/worg/org-contrib/babel/intro.php#sec-8_2_1" >instructions</a> are slightly out of date, but they give you a general idea of how to proceed. Essentially, your master Emacs init file will simply tangle an Org-mode file full Emacs lisp code blocks, and then load the resulting file.
+For an exercise in using Org-mode with source code, you can write your
+Emacs initialization file in Org-mode! These <a href="http://orgmode.org/worg/org-contrib/babel/intro.html#sec-8-2-1">instructions</a> are slightly
+out of date, but they give you a general idea of how to
+proceed. Essentially, your master Emacs init file will simply tangle
+an Org-mode file full Emacs lisp code blocks, and then load the
+resulting file.
 </p>
 
 <p>
-In short, there are many possibilities using these techniques! In many ways, this tutorial only scratches the surface of Org-mode's capabilities. As always, the <a href="http://orgmode.org/manual/index.html#Top" >official manual</a> will be the source of the most up-to-date information and features of this great tool.
+In short, there are many possibilities using these techniques! In many
+ways, this tutorial only scratches the surface of Org-mode's
+capabilities. As always, the <a href="http://orgmode.org/manual/index.html#Top">official manual</a> will be the source of the
+most up-to-date information and features of this great tool.
 </p>
 </div>
 </div>
-
-</div><div id="postamble">
-<p class="date">Date: </p>
-<p class="author">Author : Erik Iverson, updated to Org-version 7.9.3e by G. Jay Kerns</p>
-<p class="creator">Generated by <a href="http://orgmode.org">Org</a> mode 7.9.3e in <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1.</p>
-<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Erik Iverson, updated by G. Jay Kerns</p>
+<p class="date">Created: 2013-04-09 Tue 20:57</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1 (<a href="http://orgmode.org">Org</a> mode 8.0-pre)</p>
+<p class="xhtml-validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
 </html>
